@@ -15,11 +15,12 @@ class Scheduler{
         rowarray = vector<int>(BINS,0); //next row number to be scheduled from each bin
     }
 
-    void schedule(Queue que, Processors processor, int coreId){
+    void schedule(Queue &que, Processors &processor, int coreId){
         int binNmbr = binarray[coreId];
         int row = rowarray[coreId*8 + binNmbr];  
         vector<int> rowdata = que.readQueue(binNmbr,row);
         processor.inputbuffer = rowdata;
+        processor.free = 0;
         binarray[coreId]++;
         rowarray[coreId*8 + binNmbr]++;
     }

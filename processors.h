@@ -17,4 +17,8 @@ class Processors{
     int isFree(){
         return free;
     }
+
+    void execute(){
+        
+    }
 };

@@ -12,16 +12,19 @@ using namespace std;
 
 
 int main(){
-    ull numberVertices=10, numberEdges;
     Queue que;
     vector<Processors> processor(CORES);
     Scheduler scheduler;
-   
-    que.init(1/numberVertices);
+    Graph gr;
+    gr.createGraph("web-Google/web-Google.mtx");
+    cout<<gr.numVertices<<" "<<gr.numEdges<<endl;
+    
+    que.init(1/gr.numVertices);
     for(int core=0; core<CORES;core++)
         processor[core].init();
     
     scheduler.init();
+    
 
     int converge =1;
     u_int64_t cycle =1;
