@@ -1,8 +1,3 @@
-#include<vector>
-#include<queue>
-
-
-
 #define BINS 64
 #define ROWS 1<<9
 #define COLUMNS 1<<9
@@ -44,16 +39,13 @@ class Queue{
         toStore = vector<int>(BINS,-1);
     }
 
-    vector<int> readQueue(ull vertex){
-        int binNmbr = getBin(vertex);
-        int row = getRow(vertex);
-
+    vector<int> readQueue(int binNmbr, int row){ // ----------------------------update it for contention with delta update and read.
         return bins[binNmbr][row];
     }
 
     // returns 1 if insertion is completed else 0. 
     // Generation unit needs to wait until insertion is completed.
-    int insert(ull vertex, int delta){
+    int insert(ull vertex, int delta){ //----------------------------update it for contention with delta update and read. Also to stall if insertion can't be made at the moment.
         int binNmbr = getBin(vertex);
         int row = getRow(vertex);
         int col = getCol(vertex);
