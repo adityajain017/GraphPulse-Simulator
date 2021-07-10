@@ -8,6 +8,7 @@ class Processors{
     vector<int> inputbuffer;
     GenerationUnit gnrtunit;
     int free =1;
+    ull frstVrtx =-1;
 
     void init(){
         inputbuffer = vector<int>(COLUMNS,0);

@@ -15,6 +15,10 @@ int getCol(ull vertex){
     return 0;
 }
 
+ull getVertex(int binNmbr, int row, int col){
+    return 0;
+}
+
 class Queue{
     public:
     int n =64;
@@ -39,8 +43,18 @@ class Queue{
         toStore = vector<int>(BINS,-1);
     }
 
-    vector<int> readQueue(int binNmbr, int row){ // ----------------------------update it for contention with delta update and read.
-        return bins[binNmbr][row];
+    bool readQueue(int binNmbr, int row, vector<int> &res, ull &vrtx){ // ----------------------------update it for contention with delta update and read.
+        if(!activeRows[binNmbr][row]){
+            res = bins[binNmbr][row];
+            vrtx = getVertex(binNmbr, row, 0);
+            activeRows[binNmbr][row] =1;
+            for(int col=0; col<COLUMNS; col++){
+                bins[binNmbr][row][col] =0;
+            }
+            return true;
+        }
+        else
+            return false;
     }
 
     // returns 1 if insertion is completed else 0. 

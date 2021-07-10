@@ -1,6 +1,6 @@
 #include<fstream>
 #include<unordered_map>
-#include<unordered_set>
+// #include<unordered_set>
 
 #define ull unsigned long long
 
@@ -10,8 +10,10 @@ class Graph{
     vector<int> csr_oa;
     vector<int> csr_na;
     vector<int> outdegree;
+    vector<int> vrtxproperty;
+    
     void init(){
-
+        vrtxproperty = vector<int>(numVertices);
     }
 
     void createGraph(string path){
@@ -40,9 +42,11 @@ class Graph{
         // debugging
         // cout<<"size of set: "<<count.size()<<endl;
 
+        init();
+
         for(u=1; u<=numVertices; u++){
             csr_oa.push_back(csr_na.size());
-            outdegree.push_back(adjlist[u].size());
+            // outdegree.push_back(adjlist[u].size());
             for(ull i=0; i<adjlist[u].size();i++){
                 v = adjlist[u][i];
                 csr_na.push_back(v);

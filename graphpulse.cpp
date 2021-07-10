@@ -12,19 +12,22 @@ using namespace std;
 
 
 int main(){
+// Initialization phase start
+    string path = "test.txt";
+    // string path = "web-Google/web-Google.mtx";
     Queue que;
     vector<Processors> processor(CORES);
     Scheduler scheduler;
     Graph gr;
-    gr.createGraph("web-Google/web-Google.mtx");
+    gr.createGraph(path);
     cout<<gr.numVertices<<" "<<gr.numEdges<<endl;
     
     que.init(1/gr.numVertices);
     for(int core=0; core<CORES;core++)
         processor[core].init();
     
-    scheduler.init();
-    
+    scheduler.init(); 
+// Initialization phase over
 
     int converge =1;
     u_int64_t cycle =1;
@@ -32,10 +35,12 @@ int main(){
     while(1){
         for(int core=0; core<CORES; core++){
             if(processor[core].isFree()){
-                scheduler.schedule(que,processor[core],core);
+                scheduler.schedule(processor[core]);
             }
+            processor[core].execute();
         }
         que.pipelineProcess();
+        if(scheduler.filloutbuffer(que)) break;
         if(converge) break;
         cycle++;
     }
