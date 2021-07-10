@@ -3,7 +3,6 @@
 #define THRESHOLD 0.5
 
 #include"generationunit.h"
-#include"graph.h"
 
 class Processors{
     public:
@@ -24,16 +23,16 @@ class Processors{
         return free;
     }
 
-    void execute(Graph &gr){
+    void execute(Graph &gr, Queue &que){
         gnrtbufferId = gnrtunit.getFreeBuffer();
         if(!free){
             write();
             compute();
-            read(gr);
+            read(gr,que);
         }
     }
 
-    void read(Graph &gr){
+    void read(Graph &gr, Queue &que){
         if(gnrtbufferId!=-1){
             while(inputbuffer[currentindx]!=0) currentindx++;
             if(currentindx<=COLUMNS){
@@ -43,7 +42,7 @@ class Processors{
                 gr.vrtxproperty[vertexId]+=inputbuffer[currentindx];
                 if(outdegree>0){
                     if(inputbuffer[currentindx] > THRESHOLD)
-                       gnrtunit.propogate(vertexId, inputbuffer[currentindx], gnrtbufferId);
+                       gnrtunit.propogate(gr, que, vertexId, inputbuffer[currentindx], gnrtbufferId);
                 }
             }
             else{

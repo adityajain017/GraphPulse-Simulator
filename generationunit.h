@@ -1,5 +1,5 @@
 #define ull unsigned long long
-
+#include"graph.h"
 
 class GenerationUnit{
     public:
@@ -17,7 +17,10 @@ class GenerationUnit{
         return -1;
     }
 
-    void propogate(ull vertex, int delta, int bufferId){
+    void propogate(Graph &gr, Queue &que, ull vertex, int delta, int bufferId){
         genbufferFree[bufferId] = false;
+        for(ull i=gr.csr_oa[vertex]; i<gr.csr_oa[vertex+1];i++){
+            que.insert(gr.csr_na[i], delta);
+        }
     }
 };

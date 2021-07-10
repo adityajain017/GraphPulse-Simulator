@@ -38,7 +38,7 @@ int main(){
             if(processor[core].isFree()){
                 scheduler.schedule(processor[core]);
             }
-            processor[core].execute(gr);
+            processor[core].execute(gr, que);
         }
         que.pipelineProcess();
         if(scheduler.filloutbuffer(que)) break;
