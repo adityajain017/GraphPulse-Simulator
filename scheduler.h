@@ -26,7 +26,7 @@ class Scheduler{
         if(!queue_outbuffer.empty()){
             processor.inputbuffer = queue_outbuffer.front();
             processor.frstVrtx = frstvrtx_que.front();
-            processor.free = 0;
+            processor.free = false;
             queue_outbuffer.pop();
             frstvrtx_que.pop();
         }

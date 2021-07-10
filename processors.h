@@ -1,25 +1,65 @@
 #define CORES 8
 #define COLUMNS 1<<9
+#define THRESHOLD 0.5
 
 #include"generationunit.h"
+#include"graph.h"
 
 class Processors{
     public:
     vector<int> inputbuffer;
     GenerationUnit gnrtunit;
-    int free =1;
+    bool free = true;;
     ull frstVrtx =-1;
+
+    int gnrtbufferId;
+    int currentindx=0;
 
     void init(){
         inputbuffer = vector<int>(COLUMNS,0);
         gnrtunit.init();
     }
 
-    int isFree(){
+    bool isFree(){
         return free;
     }
 
-    void execute(){
-        
+    void execute(Graph &gr){
+        gnrtbufferId = gnrtunit.getFreeBuffer();
+        if(!free){
+            write();
+            compute();
+            read(gr);
+        }
+    }
+
+    void read(Graph &gr){
+        if(gnrtbufferId!=-1){
+            while(inputbuffer[currentindx]!=0) currentindx++;
+            if(currentindx<=COLUMNS){
+                ull vertexId = frstVrtx+currentindx;
+                int vrtxproperty = gr.vrtxproperty[vertexId];
+                ull outdegree = gr.csr_oa[vertexId+1] - gr.csr_oa[vertexId];
+                gr.vrtxproperty[vertexId]+=inputbuffer[currentindx];
+                if(outdegree>0){
+                    if(inputbuffer[currentindx] > THRESHOLD)
+                       gnrtunit.propogate(vertexId, inputbuffer[currentindx], gnrtbufferId);
+                }
+            }
+            else{
+                free = true;
+                currentindx=0;
+            }
+        }
+    }
+
+    void compute(){
+
+    }
+
+    void write(){
+        if(gnrtbufferId!=-1){
+            
+        }
     }
 };

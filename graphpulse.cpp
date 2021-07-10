@@ -5,7 +5,7 @@ using namespace std;
 #include<queue>
 
 #include"scheduler.h"
-#include"graph.h"
+// #include"graph.h"
 
 #define ull unsigned long long
 #define CORES 8
@@ -29,6 +29,7 @@ int main(){
     scheduler.init(); 
 // Initialization phase over
 
+// Cycle Phase starts
     int converge =1;
     u_int64_t cycle =1;
     
@@ -37,11 +38,14 @@ int main(){
             if(processor[core].isFree()){
                 scheduler.schedule(processor[core]);
             }
-            processor[core].execute();
+            processor[core].execute(gr);
         }
         que.pipelineProcess();
         if(scheduler.filloutbuffer(que)) break;
         if(converge) break;
         cycle++;
     }
+// Cycle Phase over
+
+    cout<<"Number of cycles: "<<cycle<<endl;
 }
